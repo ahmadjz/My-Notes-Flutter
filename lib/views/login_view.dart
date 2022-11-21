@@ -41,21 +41,29 @@ class _LoginViewState extends State<LoginView> {
             enableSuggestions: false,
           ),
           TextButton(
-              onPressed: () async {
-                try {
-                  final email = _emailTextEditingController.text;
-                  final password = _passwordTextEditingController.text;
-                  print(email);
-                  print(password);
-                  final cred = await FirebaseAuth.instance
-                      .signInWithEmailAndPassword(
-                          email: email, password: password);
-                  print(cred);
-                } on FirebaseAuthException catch (e) {
-                  print(e);
-                }
-              },
-              child: Text("Login"))
+            onPressed: () async {
+              try {
+                final email = _emailTextEditingController.text;
+                final password = _passwordTextEditingController.text;
+                print(email);
+                print(password);
+                final cred = await FirebaseAuth.instance
+                    .signInWithEmailAndPassword(
+                        email: email, password: password);
+                print(cred);
+              } on FirebaseAuthException catch (e) {
+                print(e);
+              }
+            },
+            child: Text("Login"),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context)
+                  .pushNamedAndRemoveUntil('/register/', (route) => false);
+            },
+            child: Text("Not registered yet? Register here "),
+          ),
         ],
       ),
     );

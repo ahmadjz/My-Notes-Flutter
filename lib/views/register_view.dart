@@ -53,7 +53,14 @@ class _RegisterViewState extends State<RegisterView> {
                   print(cred);
                 } on FirebaseAuthException catch (e) {}
               },
-              child: Text("Register"))
+              child: Text("Register")),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context)
+                  .pushNamedAndRemoveUntil('/login/', (route) => false);
+            },
+            child: Text("Already a user? Login here "),
+          ),
         ],
       ),
     );
