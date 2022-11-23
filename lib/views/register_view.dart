@@ -26,17 +26,17 @@ class _RegisterViewState extends State<RegisterView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Reister"),
+        title: const Text("Reister"),
       ),
       body: Column(
         children: [
           TextField(
-              decoration: InputDecoration(hintText: "Enter Email"),
+              decoration: const InputDecoration(hintText: "Enter Email"),
               controller: _emailTextEditingController,
               keyboardType: TextInputType.emailAddress,
               enableSuggestions: false),
           TextField(
-            decoration: InputDecoration(hintText: "Enter Passord"),
+            decoration: const InputDecoration(hintText: "Enter Passord"),
             controller: _passwordTextEditingController,
             obscureText: true,
             enableSuggestions: false,
@@ -52,15 +52,15 @@ class _RegisterViewState extends State<RegisterView> {
                       .createUserWithEmailAndPassword(
                           email: email, password: password);
                   print(cred);
-                } on FirebaseAuthException catch (e) {}
+                } on FirebaseAuthException {}
               },
-              child: Text("Register")),
+              child: const Text("Register")),
           TextButton(
             onPressed: () {
               Navigator.of(context)
                   .pushNamedAndRemoveUntil(loginRoute, (route) => false);
             },
-            child: Text("Already a user? Login here "),
+            child: const Text("Already a user? Login here "),
           ),
         ],
       ),
