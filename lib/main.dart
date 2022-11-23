@@ -19,11 +19,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: HomePage(),
+      home: const HomePage(),
       routes: {
-        loginRoute: (context) => LoginView(),
-        registerRoute: (context) => RegisterView(),
-        notesRoute: (context) => NotesView()
+        loginRoute: (context) => const LoginView(),
+        registerRoute: (context) => const RegisterView(),
+        notesRoute: (context) => const NotesView(),
+        verifyEmailRoute: (context) => const VerifyEmailView()
       },
     );
   }
@@ -39,7 +40,7 @@ class HomePage extends StatelessWidget {
       builder: (context) {
         if (user != null) {
           if (user.emailVerified) {
-            return NotesView();
+            return const NotesView();
           } else {
             return const VerifyEmailView();
           }
@@ -63,7 +64,7 @@ class _NotesViewState extends State<NotesView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Your notes"),
+        title: const Text("Your notes"),
         actions: [
           PopupMenuButton<MenuAction>(
             itemBuilder: (context) {
@@ -89,7 +90,7 @@ class _NotesViewState extends State<NotesView> {
           )
         ],
       ),
-      body: Text("Helllo"),
+      body: const Text("Helllo"),
     );
   }
 }
@@ -105,13 +106,13 @@ Future<bool> showLogOutDialog(BuildContext context) {
           onPressed: () {
             Navigator.of(context).pop(false);
           },
-          child: Text("Cancel"),
+          child: const Text("Cancel"),
         ),
         TextButton(
           onPressed: () {
             Navigator.of(context).pop(true);
           },
-          child: Text("LogOut"),
+          child: const Text("LogOut"),
         ),
       ],
     ),

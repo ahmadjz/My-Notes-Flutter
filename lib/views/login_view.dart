@@ -11,15 +11,13 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  final TextEditingController _emailTextEditingController =
-      TextEditingController();
-  final TextEditingController _passwordTextEditingController =
-      TextEditingController();
+  final TextEditingController _email = TextEditingController();
+  final TextEditingController _password = TextEditingController();
 
   @override
   void dispose() {
-    _emailTextEditingController.dispose();
-    _passwordTextEditingController.dispose();
+    _email.dispose();
+    _password.dispose();
     super.dispose();
   }
 
@@ -32,32 +30,46 @@ class _LoginViewState extends State<LoginView> {
       body: Column(
         children: [
           TextField(
-              decoration: const InputDecoration(hintText: "Enter Email"),
-              controller: _emailTextEditingController,
-              keyboardType: TextInputType.emailAddress,
-              enableSuggestions: false),
+            controller: _email,
+            enableSuggestions: false,
+            autocorrect: false,
+            keyboardType: TextInputType.emailAddress,
+            decoration: const InputDecoration(
+              hintText: 'Enter your email here',
+            ),
+          ),
           TextField(
-            decoration: const InputDecoration(hintText: "Enter Passord"),
-            controller: _passwordTextEditingController,
+            controller: _password,
             obscureText: true,
             enableSuggestions: false,
+            autocorrect: false,
+            decoration: const InputDecoration(
+              hintText: 'Enter your password here',
+            ),
           ),
           TextButton(
             onPressed: () async {
+              final email = _email.text;
+              final password = _password.text;
               try {
-                final email = _emailTextEditingController.text;
-                final password = _passwordTextEditingController.text;
-                print(email);
-                print(password);
-
                 await FirebaseAuth.instance.signInWithEmailAndPassword(
                   email: email,
                   password: password,
                 );
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                  notesRoute,
-                  (route) => false,
-                );
+                final user = FirebaseAuth.instance.currentUser;
+                if (user?.emailVerified ?? false) {
+                  // user's email is verified
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                    notesRoute,
+                    (route) => false,
+                  );
+                } else {
+                  // user's email is NOT verified
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                    verifyEmailRoute,
+                    (route) => false,
+                  );
+                }
               } on FirebaseAuthException catch (e) {
                 if (e.code == 'user-not-found') {
                   await showErrorDialog(
@@ -82,15 +94,17 @@ class _LoginViewState extends State<LoginView> {
                 );
               }
             },
-            child: const Text("Login"),
+            child: const Text('Login'),
           ),
           TextButton(
             onPressed: () {
-              Navigator.of(context)
-                  .pushNamedAndRemoveUntil(registerRoute, (route) => false);
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                registerRoute,
+                (route) => false,
+              );
             },
-            child: const Text("Not registered yet? Register here "),
-          ),
+            child: const Text('Not registered yet? Register here!'),
+          )
         ],
       ),
     );
