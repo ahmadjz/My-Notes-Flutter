@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:my_notes/constants/routes.dart';
+import 'package:my_notes/enums/menu_action.dart';
 import 'package:my_notes/views/login_view.dart';
 import 'package:my_notes/views/register_view.dart';
 import 'package:my_notes/views/verify_email_view.dart';
@@ -19,9 +21,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: HomePage(),
       routes: {
-        '/login/': (context) => LoginView(),
-        '/register/': (context) => RegisterView(),
-        '/notes/': (context) => NotesView()
+        loginRoute: (context) => LoginView(),
+        registerRoute: (context) => RegisterView(),
+        notesRoute: (context) => NotesView()
       },
     );
   }
@@ -48,8 +50,6 @@ class HomePage extends StatelessWidget {
     );
   }
 }
-
-enum MenuAction { logout }
 
 class NotesView extends StatefulWidget {
   const NotesView({super.key});
@@ -81,7 +81,7 @@ class _NotesViewState extends State<NotesView> {
                   if (shouldLogOut) {
                     await FirebaseAuth.instance.signOut();
                     Navigator.of(context)
-                        .pushNamedAndRemoveUntil("/login/", (route) => false);
+                        .pushNamedAndRemoveUntil(loginRoute, (route) => false);
                   }
                   break;
               }
