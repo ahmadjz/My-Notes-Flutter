@@ -28,6 +28,10 @@ abstract class NotesServiceDatabase {
 }
 
 class NotesService extends NotesServiceDatabase {
+  static final NotesService _shared = NotesService._sharedInstance();
+  NotesService._sharedInstance();
+  factory NotesService() => _shared;
+
   Database? _db;
 
   List<DatabaseNote> _notes = [];
