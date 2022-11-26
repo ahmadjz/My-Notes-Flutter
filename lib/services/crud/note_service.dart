@@ -35,6 +35,8 @@ class NotesService extends NotesServiceDatabase {
   final _notesStreamController =
       StreamController<List<DatabaseNote>>.broadcast();
 
+  Stream<List<DatabaseNote>> get allNotes => _notesStreamController.stream;
+
   Future<void> _cacheNotes() async {
     final allNotes = await getAllNotes();
     _notes = allNotes;
@@ -51,6 +53,14 @@ class NotesService extends NotesServiceDatabase {
       return createdUser;
     } catch (e) {
       rethrow;
+    }
+  }
+
+  Future<void> _ensureDbIsOpen() async {
+    try {
+      await open();
+    } on DatabaseAlreadyOpenException {
+      // empty
     }
   }
 
@@ -93,6 +103,7 @@ class NotesService extends NotesServiceDatabase {
 
   @override
   Future<void> deleteUser({required String email}) async {
+    await _ensureDbIsOpen();
     final db = _getDatabaseOrThrow();
     final deletedCount = await db.delete(
       userTable,
@@ -108,6 +119,7 @@ class NotesService extends NotesServiceDatabase {
 
   @override
   Future<DatabaseUser> createUser({required String email}) async {
+    await _ensureDbIsOpen();
     final db = _getDatabaseOrThrow();
     final results = await db.query(
       userTable,
@@ -130,6 +142,7 @@ class NotesService extends NotesServiceDatabase {
 
   @override
   Future<DatabaseUser> getUser({required String email}) async {
+    await _ensureDbIsOpen();
     final db = _getDatabaseOrThrow();
 
     final results = await db.query(
@@ -148,6 +161,7 @@ class NotesService extends NotesServiceDatabase {
 
   @override
   Future<DatabaseNote> createNote({required DatabaseUser owner}) async {
+    await _ensureDbIsOpen();
     final db = _getDatabaseOrThrow();
 
     // make sure owner exists in the database with the correct id
@@ -178,6 +192,7 @@ class NotesService extends NotesServiceDatabase {
 
   @override
   Future<DatabaseNote> getNote({required int id}) async {
+    await _ensureDbIsOpen();
     final db = _getDatabaseOrThrow();
     final notes = await db.query(
       noteTable,
@@ -199,6 +214,7 @@ class NotesService extends NotesServiceDatabase {
 
   @override
   Future<int> deleteAllNotes() async {
+    await _ensureDbIsOpen();
     final db = _getDatabaseOrThrow();
     final numberOfDeletedNotes = await db.delete(noteTable);
     _notes = [];
@@ -208,6 +224,7 @@ class NotesService extends NotesServiceDatabase {
 
   @override
   Future<void> deleteNote({required int id}) async {
+    await _ensureDbIsOpen();
     final db = _getDatabaseOrThrow();
     final deletedCount = await db.delete(
       noteTable,
@@ -224,6 +241,7 @@ class NotesService extends NotesServiceDatabase {
 
   @override
   Future<List<DatabaseNote>> getAllNotes() async {
+    await _ensureDbIsOpen();
     final db = _getDatabaseOrThrow();
     final notes = await db.query(noteTable);
 
@@ -233,6 +251,7 @@ class NotesService extends NotesServiceDatabase {
   @override
   Future<DatabaseNote> updateNote(
       {required DatabaseNote note, required String text}) async {
+    await _ensureDbIsOpen();
     final db = _getDatabaseOrThrow();
 
     await getNote(id: note.id);
