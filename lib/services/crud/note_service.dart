@@ -274,7 +274,6 @@ class NotesService extends NotesServiceDatabase {
       where: 'id = ?',
       whereArgs: [note.id],
     );
-    print(updatesCount);
 
     if (updatesCount == 0) {
       throw CouldNotUpdateNote();
