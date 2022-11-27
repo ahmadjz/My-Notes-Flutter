@@ -93,13 +93,6 @@ class _NotesViewState extends State<NotesView> {
           }
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          final notesService = NotesService();
-          final notes = await notesService.getAllNotes();
-          print(notes);
-        },
-      ),
     );
   }
 }
