@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter/widgets.dart';
 import 'package:meta/meta.dart';
 import 'package:my_notes/services/auth/auth_provider.dart';
 import 'package:my_notes/services/auth/models/auth_user.dart';
@@ -21,14 +22,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     await provider.initialize();
     final user = provider.currentUser;
     if (user == null) {
-      emit(const AuthStateLoggedOut());
+      emit(const AuthStateLoggedOut(exception: null));
     } else {
       emit(AuthStateLoggedIn(user: user));
     }
   }
 
   FutureOr<void> _login(AuthEventLogin event, Emitter<AuthState> emit) async {
-    emit(const AuthStateLoading());
     final email = event.email;
     final password = event.password;
 
@@ -39,7 +39,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       );
       emit(AuthStateLoggedIn(user: user));
     } on Exception catch (e) {
-      emit(AuthStateLoginFailure(exception: e));
+      emit(AuthStateLoggedOut(exception: e));
     }
   }
 
@@ -47,9 +47,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(const AuthStateLoading());
     try {
       final user = await provider.logOut();
-      emit(const AuthStateLoggedOut());
+      emit(const AuthStateLoggedOut(exception: null));
     } on Exception catch (e) {
-      emit(AuthStateLoginFailure(exception: e));
+      emit(AuthStateLoggedOut(exception: e));
     }
   }
 }
