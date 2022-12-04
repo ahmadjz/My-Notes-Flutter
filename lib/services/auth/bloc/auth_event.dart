@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'auth_bloc.dart';
 
 @immutable
@@ -8,6 +7,10 @@ abstract class AuthEvent {
 
 class AuthEventInitialize extends AuthEvent {
   const AuthEventInitialize();
+}
+
+class AuthEventSendEmailVerification extends AuthEvent {
+  const AuthEventSendEmailVerification();
 }
 
 class AuthEventLogin extends AuthEvent {
@@ -21,4 +24,21 @@ class AuthEventLogin extends AuthEvent {
 
 class AuthEventLogout extends AuthEvent {
   const AuthEventLogout();
+}
+
+class AuthEventRegister extends AuthEvent {
+  final String email;
+  final String password;
+  const AuthEventRegister({
+    required this.email,
+    required this.password,
+  });
+}
+
+class AuthEventShouldRegister extends AuthEvent {
+  const AuthEventShouldRegister();
+}
+
+class AuthEventLogOut extends AuthEvent {
+  const AuthEventLogOut();
 }
