@@ -19,6 +19,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthEventLogout>(_logout);
     on<AuthEventSendEmailVerification>(_sendEmailVerification);
     on<AuthEventRegister>(_register);
+    on<AuthEventForgotPassword>(_forgotPassword);
+    on<AuthEventShouldRegister>(_navigateToRegister);
+    on<AuthEventLogOut>(_navigateToLogin);
   }
 
   FutureOr<void> _initialize(
@@ -129,6 +132,71 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         exception: e,
         isLoading: false,
       ));
+    }
+  }
+
+  FutureOr<void> _forgotPassword(
+      AuthEventForgotPassword event, Emitter<AuthState> emit) async {
+    emit(const AuthStateForgotPassword(
+      exception: null,
+      hasSentEmail: false,
+      isLoading: false,
+    ));
+    final email = event.email;
+    if (email == null) {
+      return; // user just wants to go to forgot-password screen
+    }
+
+    // user wants to actually send a forgot-password email
+    emit(const AuthStateForgotPassword(
+      exception: null,
+      hasSentEmail: false,
+      isLoading: true,
+    ));
+
+    bool didSendEmail;
+    Exception? exception;
+    try {
+      await provider.sendPasswordReset(toEmail: email);
+      didSendEmail = true;
+      exception = null;
+    } on Exception catch (e) {
+      didSendEmail = false;
+      exception = e;
+    }
+
+    emit(AuthStateForgotPassword(
+      exception: exception,
+      hasSentEmail: didSendEmail,
+      isLoading: false,
+    ));
+  }
+
+  FutureOr<void> _navigateToRegister(
+      AuthEventShouldRegister event, Emitter<AuthState> emit) {
+    emit(const AuthStateRegistering(
+      exception: null,
+      isLoading: false,
+    ));
+  }
+
+  FutureOr<void> _navigateToLogin(
+      AuthEventLogOut event, Emitter<AuthState> emit) async {
+    try {
+      await provider.logOut();
+      emit(
+        const AuthStateLoggedOut(
+          exception: null,
+          isLoading: false,
+        ),
+      );
+    } on Exception catch (e) {
+      emit(
+        AuthStateLoggedOut(
+          exception: e,
+          isLoading: false,
+        ),
+      );
     }
   }
 }
