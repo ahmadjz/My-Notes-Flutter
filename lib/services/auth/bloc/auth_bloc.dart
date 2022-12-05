@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
-import 'package:meta/meta.dart';
 import 'package:my_notes/services/auth/auth_provider.dart';
 import 'package:my_notes/services/auth/models/auth_user.dart';
 
@@ -50,7 +49,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       const AuthStateLoggedOut(
         exception: null,
         isLoading: true,
-        loadingText: 'Please wait while I log you in',
       ),
     );
     final email = event.email;

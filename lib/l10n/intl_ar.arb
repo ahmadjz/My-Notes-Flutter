@@ -49,7 +49,12 @@
     "verify_email_view_prompt": "لقد قمنا بإرسال بريد ألكتروني يحوي تعليمات تأكيد البريد الألكتروني، في حال عدم وصول البريد الألكتروني الرجاء ضغط الزر في الأسفل",
     "verify_email_send_email_verification": "تأكيد البريد الألكتروني",
 
-    "notes_title": "{count, plural, =0{لا يوجد مُلاحظات} =1{مُلاحظة واحدة} other{{count} مُلاحظات}}",
+    "wait_while_login": "Please wait while I log you in",
+    "wait_a_moment": "الرجاء الانتظار...",
+
+
+
+    "notes_title": "{count,plural, =0{لا يوجد ملاحظات} =1{مُلاحظة} =2{ملاحظتان} few{{count} مُلاحظات} many{{count} مُلاحظة} other{{count} مُلاحظة}",
     "@notes_title": {
         "placeholders": {
             "count": {

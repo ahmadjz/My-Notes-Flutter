@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_notes/extensions/build_context/loc.dart';
 import 'package:my_notes/extensions/get_arguments.dart';
 import 'package:my_notes/services/auth/auth_service.dart';
 import 'package:my_notes/services/cloud/firebase_cloud_storage.dart';
@@ -91,7 +92,7 @@ class _CreateOrUpdateNoteViewState extends State<CreateOrUpdateNoteView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('New Note'),
+        title: Text(context.loc.note),
         actions: [
           IconButton(
             onPressed: () async {
@@ -116,8 +117,8 @@ class _CreateOrUpdateNoteViewState extends State<CreateOrUpdateNoteView> {
                 controller: _textController,
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
-                decoration: const InputDecoration(
-                  hintText: 'Start typing your note...',
+                decoration: InputDecoration(
+                  hintText: context.loc.start_typing_your_note,
                 ),
               );
             default:

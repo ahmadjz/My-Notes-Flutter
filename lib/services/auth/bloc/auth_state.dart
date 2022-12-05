@@ -3,10 +3,10 @@ part of 'auth_bloc.dart';
 @immutable
 abstract class AuthState {
   final bool isLoading;
-  final String? loadingText;
+  final String? loadingTextKey;
   const AuthState({
     required this.isLoading,
-    this.loadingText = 'Please wait a moment',
+    this.loadingTextKey,
   });
 }
 
@@ -51,10 +51,10 @@ class AuthStateLoggedOut extends AuthState with EquatableMixin {
   const AuthStateLoggedOut({
     required this.exception,
     required bool isLoading,
-    String? loadingText,
+    String? loadingTextKey,
   }) : super(
           isLoading: isLoading,
-          loadingText: loadingText,
+          loadingTextKey: loadingTextKey,
         );
 
   @override
