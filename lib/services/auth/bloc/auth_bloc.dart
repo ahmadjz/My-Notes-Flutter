@@ -116,6 +116,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   FutureOr<void> _register(
       AuthEventRegister event, Emitter<AuthState> emit) async {
+    emit(
+      const AuthStateRegistering(
+        exception: null,
+        isLoading: true,
+      ),
+    );
     final email = event.email;
     final password = event.password;
     try {
