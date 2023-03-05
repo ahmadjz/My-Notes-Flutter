@@ -2,7 +2,7 @@
 
 # My Notes
  
-My Notes is a simple notes app built for practising new code approaches and architectures with Flutter, it has 2 implementations, one online with Firebase and one offline with Sqlite
+A notes app with two versions: an online one that uses Firebase and authentication, and an offline one that uses Sqlite. Bloc is used for state management and event handling.
 
 ### Technologies
 
